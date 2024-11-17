@@ -9,11 +9,11 @@ export interface Chat {
   title: string;
   messages: Message[];
   createdAt: number;
-  model: 'ChatGPT' | 'GPT-4';
+  model: 'ShakitmaanGpt' | 'GPT-4';
 }
 
 export interface ChatState {
   chats: Chat[];
   activeChat: string | null;
-  model: 'ChatGPT' | 'GPT-4';
+  model: 'ShakitmaanGpt' | 'GPT-4';
 }
