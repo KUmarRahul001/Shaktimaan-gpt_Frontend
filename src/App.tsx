@@ -9,7 +9,8 @@ import type { ChatState, Chat, Message } from './types';
 import axios from 'axios';
 import { Bot } from 'lucide-react';
 
-const API_URL = 'http://localhost:5000/api/chat';
+const API_URL = 'https://shaktimaan-gpt-backend.onrender.com/api/chat';
+
 
 function App() {
   const [chatState, setChatState] = useLocalStorage<ChatState>('chat-state', {
