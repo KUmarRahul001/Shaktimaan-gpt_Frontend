@@ -2,8 +2,8 @@ import React from 'react';
 import { Sparkles } from 'lucide-react';
 
 interface ModelSelectorProps {
-  model: 'ChatGPT' | 'GPT-4';
-  onModelChange: (model: 'ChatGPT' | 'GPT-4') => void;
+  model: 'ShakitmaanGpt' | 'GPT-4';
+  onModelChange: (model: 'ShakitmaanGpt' | 'GPT-4') => void;
 }
 
 export function ModelSelector({ model, onModelChange }: ModelSelectorProps) {
