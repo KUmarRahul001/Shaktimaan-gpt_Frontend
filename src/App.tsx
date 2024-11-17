@@ -16,7 +16,7 @@ function App() {
   const [chatState, setChatState] = useLocalStorage<ChatState>('chat-state', {
     chats: [],
     activeChat: null,
-    model: 'ChatGPT',
+    model: 'ShaktimaanGpt',
   });
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
