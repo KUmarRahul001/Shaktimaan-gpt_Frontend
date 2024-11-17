@@ -143,7 +143,7 @@ function App() {
     });
   };
 
-  const handleModelChange = (model: 'ChatGPT' | 'GPT-4') => {
+  const handleModelChange = (model: 'ShaktimaanGpt' | 'GPT-4') => {
     setChatState((prev) => ({ ...prev, model }));
   };
 
