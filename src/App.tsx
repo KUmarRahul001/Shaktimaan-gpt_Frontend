@@ -11,12 +11,11 @@ import { Bot } from 'lucide-react';
 
 const API_URL = 'https://shaktimaan-gpt-backend.onrender.com/api/chat';
 
-
 function App() {
   const [chatState, setChatState] = useLocalStorage<ChatState>('chat-state', {
     chats: [],
     activeChat: null,
-    model: 'ShaktimaanGpt',
+    model: 'ShakitmaanGpt',
   });
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -143,8 +142,8 @@ function App() {
     });
   };
 
-  const handleModelChange = (model: 'ShaktimaanGpt' | 'GPT-4') => {
-    setChatState((prev) => ({ ...prev, model }));
+  const handleModelChange = (model: 'ShakitmaanGpt' | 'GPT-4') => {
+    setChatState((prev: ChatState) => ({ ...prev, model: model }));
   };
 
   return (
