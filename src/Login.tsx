@@ -7,14 +7,18 @@ const Login = ({ onLogin }: { onLogin: () => void }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      onLogin(); // Call the onLogin function passed as prop
+      onLogin();  // Call the onLogin function passed as prop
     } catch (error) {
-      setError('Invalid email or password');
+      setError('Invalid credentials. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -41,7 +45,9 @@ const Login = ({ onLogin }: { onLogin: () => void }) => {
           />
         </div>
         {error && <p className="error">{error}</p>}
-        <button type="submit">Login</button>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Logging in...' : 'Login'}
+        </button>
       </form>
     </div>
   );
