@@ -18,8 +18,9 @@ const Register = () => {
     setLoading(true);
     setError(null);
 
-    // Validate email format
-    if (!email.includes('@')) {
+    // Validate email format using a regular expression
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
       setEmailValid(false);
       setLoading(false);
       return;
@@ -68,7 +69,10 @@ const Register = () => {
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setError(null); // Clear error when the user starts typing
+              }}
               required
               className={`w-full p-2 mt-1 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 ${!emailValid ? 'border-2 border-red-500' : ''}`}
             />
@@ -79,7 +83,10 @@ const Register = () => {
             <input
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setError(null); // Clear error when the user starts typing
+              }}
               required
               className="w-full p-2 mt-1 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -89,7 +96,10 @@ const Register = () => {
             <input
               type="password"
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
+                setError(null); // Clear error when the user starts typing
+              }}
               required
               className="w-full p-2 mt-1 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
