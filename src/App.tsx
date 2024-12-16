@@ -4,7 +4,7 @@ import { ChatMessage } from './components/ChatMessage';
 import { ChatInput } from './components/ChatInput';
 import { EmptyState } from './components/EmptyState';
 import { ModelSelector } from './components/ModelSelector';
-import { useLocalStorage } from './hooks/useLocalStorage';
+import { useFirebaseStorage } from './hooks/useFirebaseStorage';
 import type { ChatState, Chat, Message } from './types';
 import axios from 'axios';
 import { Bot } from 'lucide-react';
@@ -12,7 +12,7 @@ import { Bot } from 'lucide-react';
 const API_URL = 'https://shaktimaan-gpt-backend.onrender.com/api/chat';
 
 function App() {
-  const [chatState, setChatState] = useLocalStorage<ChatState>('chat-state', {
+  const [chatState, setChatState] = useFirebaseStorage<ChatState>('chat-state', {
     chats: [],
     activeChat: null,
     model: 'ShakitmaanGpt',
