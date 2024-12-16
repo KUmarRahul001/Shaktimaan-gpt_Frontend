@@ -3,7 +3,6 @@ import { Sidebar } from './components/Sidebar';
 import { ChatMessage } from './components/ChatMessage';
 import { ChatInput } from './components/ChatInput';
 import { EmptyState } from './components/EmptyState';
-import { ModelSelector } from './components/ModelSelector';
 import { useFirebaseStorage } from './hooks/useFirebaseStorage';
 import type { ChatState, Chat, Message } from './types';
 import axios from 'axios';
@@ -74,7 +73,6 @@ function App() {
       createNewChat();
     }
 
-    // Update chat with user message
     setChatState((prev) => ({
       ...prev,
       chats: prev.chats.map((chat) => {
@@ -91,17 +89,14 @@ function App() {
     setLoading(true);
 
     try {
-      // Get current chat history
-      const currentChat = chatState.chats.find(chat => chat.id === chatState.activeChat);
+      const currentChat = chatState.chats.find((chat) => chat.id === chatState.activeChat);
       const chatHistory = currentChat?.messages || [];
 
-      // Make API call to Flask backend
       const response = await axios.post(API_URL, {
         message: input,
-        history: chatHistory
+        history: chatHistory,
       });
 
-      // Update chat with AI response
       setChatState((prev) => ({
         ...prev,
         chats: prev.chats.map((chat) =>
@@ -112,7 +107,6 @@ function App() {
       }));
     } catch (error) {
       console.error('Error getting response:', error);
-      // Handle error appropriately
       const errorMessage: Message = {
         content: "Sorry, I encountered an error while processing your request.",
         role: 'assistant',
@@ -131,19 +125,8 @@ function App() {
     }
   };
 
-  const handleDeleteChat = (chatId: string) => {
-    setChatState((prev) => {
-      const newChats = prev.chats.filter((chat) => chat.id !== chatId);
-      return {
-        ...prev,
-        chats: newChats,
-        activeChat: newChats.length > 0 ? newChats[0].id : null,
-      };
-    });
-  };
-
   const handleModelChange = (model: 'ShakitmaanGpt' | 'GPT-4') => {
-    setChatState((prev: ChatState) => ({ ...prev, model: model }));
+    setChatState((prev: ChatState) => ({ ...prev, model }));
   };
 
   return (
@@ -153,13 +136,30 @@ function App() {
         activeChat={chatState.activeChat}
         onNewChat={createNewChat}
         onSelectChat={(chatId) => setChatState((prev) => ({ ...prev, activeChat: chatId }))}
-        onDeleteChat={handleDeleteChat}
+        onDeleteChat={(chatId) => {
+          setChatState((prev) => {
+            const newChats = prev.chats.filter((chat) => chat.id !== chatId);
+            return {
+              ...prev,
+              chats: newChats,
+              activeChat: newChats.length > 0 ? newChats[0].id : null,
+            };
+          });
+        }}
       />
 
       <div className="flex-1 flex flex-col">
-        <div className="border-b border-gray-800 p-4">
-          <ModelSelector model={chatState.model} onModelChange={handleModelChange} />
-        </div>
+        <header className="border-b border-gray-800 p-4 flex justify-between items-center">
+          <h1 className="text-lg font-semibold">Shaktimaan GPT</h1>
+          <select
+            value={chatState.model}
+            onChange={(e) => handleModelChange(e.target.value as 'ShakitmaanGpt' | 'GPT-4')}
+            className="bg-gray-800 text-gray-100 p-2 rounded"
+          >
+            <option value="ShakitmaanGpt">Shakitmaan GPT</option>
+            <option value="GPT-4">GPT-4</option>
+          </select>
+        </header>
 
         <div className="flex-1 overflow-y-auto">
           {!activeChat ? (
@@ -175,9 +175,9 @@ function App() {
                     <Bot size={20} />
                   </div>
                   <div className="flex gap-1">
-                    <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                    <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                    <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                    <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></span>
+                    <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></span>
+                    <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></span>
                   </div>
                 </div>
               )}
