@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { doc, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase'; // Ensure you have Firebase initialized and `db` exported
 
 /**
- * Custom hook to store and retrieve chat data from Firebase Firestore.
- * @param key Unique key to identify the document in Firestore (e.g., user-specific or app-specific identifier).
+ * Custom hook to store and retrieve data from Firebase Firestore.
+ * @param key Unique key to identify the document in Firestore.
  * @param initialValue Initial value to set if no data exists in Firestore.
  */
 export function useFirebaseStorage<T>(key: string, initialValue: T) {
@@ -14,7 +14,7 @@ export function useFirebaseStorage<T>(key: string, initialValue: T) {
     // Fetch the data from Firebase when the component mounts
     const fetchData = async () => {
       try {
-        const docRef = doc(db, 'storage', key); // "storage" is the Firestore collection name
+        const docRef = doc(db, 'chats', key); // "chats" is the Firestore collection name
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
@@ -35,8 +35,8 @@ export function useFirebaseStorage<T>(key: string, initialValue: T) {
     // Save the data to Firebase whenever the `storedValue` changes
     const saveData = async () => {
       try {
-        const docRef = doc(db, 'storage', key);
-        await setDoc(docRef, { value: storedValue }, { merge: true });
+        const docRef = doc(db, 'chats', key);
+        await updateDoc(docRef, { value: storedValue });
       } catch (error) {
         console.error('Error saving data to Firebase:', error);
       }
