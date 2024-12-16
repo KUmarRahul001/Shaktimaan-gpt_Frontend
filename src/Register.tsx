@@ -1,8 +1,7 @@
-// src/Register.tsx
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from './firebase';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate if you're using React Router
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -11,7 +10,7 @@ const Register = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +22,7 @@ const Register = () => {
     }
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      navigate('/login'); // Redirect to the login page after successful registration
+      navigate('/login'); // Redirect to login page after successful registration
     } catch (error) {
       setError('Error creating account. Please try again.');
     } finally {
@@ -34,10 +33,10 @@ const Register = () => {
   return (
     <div className="flex items-center justify-center h-screen bg-gray-900 text-gray-100">
       <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-96">
-        <h2 className="text-2xl font-semibold text-center mb-6">Register</h2>
+        <h2 className="text-3xl font-bold text-center text-white mb-6">Register</h2>
         <form onSubmit={handleRegister} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium">Email</label>
+            <label className="block text-sm font-medium text-gray-300">Email</label>
             <input
               type="email"
               value={email}
@@ -47,7 +46,7 @@ const Register = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium">Password</label>
+            <label className="block text-sm font-medium text-gray-300">Password</label>
             <input
               type="password"
               value={password}
@@ -57,7 +56,7 @@ const Register = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium">Confirm Password</label>
+            <label className="block text-sm font-medium text-gray-300">Confirm Password</label>
             <input
               type="password"
               value={confirmPassword}
@@ -77,7 +76,7 @@ const Register = () => {
         </form>
         <div className="mt-4 text-center">
           <button
-            onClick={() => navigate('/login')} // Navigate back to login page
+            onClick={() => navigate('/login')}
             className="text-blue-500 hover:underline"
           >
             Already have an account? Login
