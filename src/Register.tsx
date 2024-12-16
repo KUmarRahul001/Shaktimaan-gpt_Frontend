@@ -9,22 +9,50 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [emailValid, setEmailValid] = useState(true);
 
   const navigate = useNavigate();
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
+
+    // Validate email format
+    if (!email.includes('@')) {
+      setEmailValid(false);
+      setLoading(false);
+      return;
+    } else {
+      setEmailValid(true);
+    }
+
+    // Check if passwords match
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       setLoading(false);
       return;
     }
+
+    // Check password strength (at least 6 characters for Firebase)
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long');
+      setLoading(false);
+      return;
+    }
+
     try {
+      // Create the user with email and password
       await createUserWithEmailAndPassword(auth, email, password);
       navigate('/login'); // Redirect to login page after successful registration
-    } catch (error) {
-      setError('Error creating account. Please try again.');
+    } catch (error: any) {
+      if (error.code === 'auth/email-already-in-use') {
+        setError('This email is already in use. Please try another one.');
+      } else if (error.code === 'auth/invalid-email') {
+        setError('Invalid email format. Please enter a valid email address.');
+      } else {
+        setError('Error creating account. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -42,8 +70,9 @@ const Register = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full p-2 mt-1 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={`w-full p-2 mt-1 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 ${!emailValid ? 'border-2 border-red-500' : ''}`}
             />
+            {!emailValid && <p className="text-red-500 text-sm">Please enter a valid email.</p>}
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-300">Password</label>
